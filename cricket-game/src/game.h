@@ -24,4 +24,8 @@ class Game{
         void tossChoice(Team);
         void startFirstInnings();
         void initializePlayers();
+        void playInnings();
+        void bat();
+        bool validateInningScore();
+        void showGameScorecard();
 };

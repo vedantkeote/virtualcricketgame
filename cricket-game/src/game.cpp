@@ -161,10 +161,68 @@ void Game::startFirstInnings(){
     cout<<"\t\t ||| FIRST INNINGS STARTS ||| "<<endl<<endl;
     isFirstInnings=true;
     initializePlayers();
+    playInnings();
 }
 
 void Game::initializePlayers(){
      batsman=&battingTeam->players[0];
      bowler=&bowlingTeam->players[0];
      cout<<battingTeam->name<<
+}
+
+void Game::playInnings(){
+    for(int i=0;i<maxBalls;i++){
+        cout<<"Press enter to bowl...";
+        getchar();
+        cout<<"Bowling.."<<endl;
+        bat();
+        if(!validateInningScore()){
+            break;
+        }
+    }
+}
+
+void Game::bat(){
+    srand(time(NULL));
+    int runsScored=rand()%7;
+    //batting team:
+    batsman->runsScored=batsman->runsScored + runsScored;
+    battingTeam->totalRunsScored=battingTeam->totalRunsScore+runsScored;
+    batsman->ballsPlayed=batsman->ballsPlayed+1;
+    //bowling team:
+    bowler->ballsBowled=bowler->ballsBowled+1;
+    bowlingTeam->totalBallsBowled=bowlingTeam->totalBallsBowled+1;
+    bowler->runsGiven=bowler->runsGiven+runsScored;
+    
+    if(runsScored!=0){
+        cout<<endl<<bowler->name<<" to "<<batsman->name<<" "<<runsScored<<" runs!"<<endl<<endl;
+        showGameScorecard();
+    } else {
+        cout<<endl<<bowler->name<<" to "<<batsman->name<<" OUT!"<<endl<<endl;
+        battingTeam->wicketsLost=battingTeam->wicketsLost+1;
+        bowler->wicketsTaken=bowler->wicketsTaken+1;
+        showGameScorecard();
+        int nextPlayerIndex=battingTeam->wicketsLost;
+        batsman=&battingTeam->players[nextPlayerIndex];
+    }
+}
+
+bool Game::validateInningScore(){
+    if(isFirstInnings){
+        if(battingTeam->wicketsLost==playersPerTeam || bowlingTeam->totalBallsBowled==maxBalls){
+            cout<<"\t\t ||| FIRST INNINGS ENDS ||| "<<endl<<endl;
+            cout<<battingTeam->name<<" "<<battingTeam->totalRunsScored<<" - "<<battingTeam->wicketsLost<<" ("<<bowlingTeam->totalBallsBowled<<")"<<endl;
+            cout<<bowlingTeam->name<<" needs "<<battingTeam->totalRunsScored+1<<" runs to win the match"<<endl<<endl;
+            return false;
+        }
+    } else {
+
+    }
+    return true;
+}
+
+void Game::showGameScorecard(){
+    cout<<"------------------------------------------------------------------------------------------------------"<<endl;
+    cout<<"\t"<<battingTeam->name<<" "<<battingTeam->totalRunsScored<<" - "<<battingTeam->wicketsLost<<" ("<<bowlingTeam->totalBallsBowled<<") |"<<batsman->name<<" "<<batsman->runsScored<<" ("<<batsman->ballsPlayed<<") \t"<<bowler->name<<" "<<bowler->ballsBowled<<" - "<<bowler->wicketsTaken<<"\t"<<endl;
+    cout<<"------------------------------------------------------------------------------------------------------"<<endl;
 }
