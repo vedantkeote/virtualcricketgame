@@ -15,5 +15,6 @@ int main() {
 	cout<<"\nPress enter to Toss...";
 	getchar();
 	game.toss();
+	game.startFirstInnings();
 	return 0;
 }

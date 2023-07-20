@@ -156,3 +156,15 @@ void Game::tossChoice(Team tossWinnerTeam){
             break;
     }
 }
+
+void Game::startFirstInnings(){
+    cout<<"\t\t ||| FIRST INNINGS STARTS ||| "<<endl<<endl;
+    isFirstInnings=true;
+    initializePlayers();
+}
+
+void Game::initializePlayers(){
+     batsman=&battingTeam->players[0];
+     bowler=&bowlingTeam->players[0];
+     cout<<battingTeam->name<<
+}
